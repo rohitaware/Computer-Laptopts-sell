@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computers - Premium Computer Rental Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Merriweather', serif;
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #071c49;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .product-card {
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .loading {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-gradient-to-r from-indigo-100 to-purple-100 shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="/" class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8 text-purple-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L15 12m0 0l-5.25-5M15 12H3"></path>
+                    </svg>
+                    <span class="text-2xl font-semibold text-gray-800">Tech</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="/" class="nav-link text-gray-700 hover:text-purple-600 transition-colors duration-300">Home</a>
+                    <a href="#products" class="nav-link text-gray-700 hover:text-purple-600 transition-colors duration-300">Products</a>
+                    <a href="#about" class="nav-link text-gray-700 hover:text-purple-600 transition-colors duration-300">About</a>
+                    <a href="contact.html" class="nav-link text-gray-700 hover:text-purple-600 transition-colors duration-300">Contact</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative" id="cartIcon">
+                        <button onclick="toggleCart()" class="text-purple-700 hover:text-purple-600 transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-1.736.17-1.597-.779a4.165 4.165 0 00-.107-2.583 4.17 4.17 0 00-2.497-1.599c-.954 0-1.807.538-2.299 1.342C2.5 15.526 2.907 17 4 17h12a1 1 0 100-2H4a.997.997 0 01-.91-1.247m2 5a2 2 0 10-4 0 2 2 0 014 0zm10 0a2 2 0 10-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                            <span class="absolute -top-2 -right-2 bg-purple-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center cart-count">0</span>
+                        </button>
+                    </div>
+                    <div id="userSection">
+                        <button onclick="showLoginModal()" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-lg hover:shadow-md transition-shadow duration-300">
+                            Sign In
+                        </button>
+                    </div>
+                    <button id="mobileMenuBtn" class="md:hidden text-purple-700" onclick="toggleMobileMenu()">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 bg-gray-800 bg-opacity-50 z-40 hidden">
+        <div class="bg-white h-full w-64 p-6 transform transition-transform">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-xl font-bold">Menu</h3>
+                <button onclick="toggleMobileMenu()" class="text-gray-500">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="flex flex-col space-y-4">
+                <a href="/" class="text-gray-700 hover:text-blue-600">Home</a>
+                <a href="#products" class="text-gray-700 hover:text-blue-600">Products</a>
+                <a href="#about" class="text-gray-700 hover:text-blue-600">About</a>
+                <a href="contact.html" class="text-gray-700 hover:text-blue-600">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="py-20 bg-gradient-to-r from-indigo-100 to-purple-100">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-6 text-center md:text-left">
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
+                        Experience Next-Level Computing with
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600">
+                            Powerful Machines
+                        </span>
+                    </h1>
+                    <p class="text-gray-700 text-lg">
+                        Discover a curated selection of high-performance computers and laptops, engineered for ultimate productivity and immersive experiences. Elevate your work, gaming, and creative projects with our top-tier technology.
+                    </p>
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 justify-center md:justify-start">
+                        <a href="#products" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                            Explore Products
+                        </a>
+                        <a href="contact.html" class="border-2 border-purple-600 text-purple-600 px-8 py-3 rounded-lg hover:bg-purple-50 transition-colors duration-300">
+                            Get in Touch
+                        </a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="rounded-3xl overflow-hidden shadow-2xl">
+                        <img src="https://media.istockphoto.com/id/681807716/photo/3d-golden-computer-and-opened-vault-door.webp?a=1&b=1&s=612x612&w=0&k=20&c=ESwDFOUS-DIQIsN52S19Uobhjhd-MROo7zcEspiXYgk="
+                             alt="High-Performance Computer Setup"
+                             class="w-full h-auto object-cover">
+                    </div>
+                    <div class="absolute bottom-0 left-0 m-6 bg-white bg-opacity-80 backdrop-blur-lg p-4 rounded-xl shadow-md">
+                        <div class="flex items-center space-x-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 text-purple-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="font-semibold text-gray-800">Quality Assured</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-20 bg-gradient-to-r from-indigo-50 to-purple-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold text-gray-900 mb-4">Why Choose Us?</h2>
+                <p class="text-gray-700 text-lg">Discover the advantages of our premium tech solutions.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="p-8 rounded-2xl bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-12 h-12 text-purple-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L15 12m0 0l-5.25-5M15 12H3"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Performance Driven</h3>
+                    <p class="text-gray-600">Experience seamless computing with our high-performance laptops and PCs, designed for efficiency and speed.</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-12 h-12 text-purple-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M16 12H4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Custom Solutions</h3>
+                    <p class="text-gray-600">Tailored PCs to meet your specific needs, from gaming rigs to professional workstations, built with precision and care.</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex items-center justify-center mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-12 h-12 text-purple-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 13h6m-3-1c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2M15 7h1.5M9 7H7.5M4 20h16a2 2 0 002-2V6a2 2 0 00-2-2H4a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Extensive Accessories</h3>
+                    <p class="text-gray-600">Enhance your tech setup with our wide range of high-quality accessories, designed for optimal performance and comfort.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="py-20 bg-gradient-to-r from-indigo-50 to-purple-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold text-purple-700 mb-4">Discover Our Top Tech Picks</h2>
+                <p class="text-gray-700 text-lg">Explore a curated selection of high-performance computers and laptops, designed to elevate your digital experience.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-10" id="productsGrid">
+                </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="fixed right-0 top-0 h-full w-96 bg-gradient-to-r from-indigo-50 to-purple-50 shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
+        <div class="p-6 h-full flex flex-col">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-2xl font-semibold text-gray-800">Shopping Cart</h3>
+                <button onclick="toggleCart()" class="text-gray-600 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="cartItems" class="flex-grow overflow-y-auto space-y-4">
+                </div>
+            <div class="border-t pt-6">
+                <div class="flex justify-between mb-4">
+                    <span class="font-semibold text-gray-700">Total:</span>
+                    <span class="font-bold text-gray-900" id="cartTotal">&#8377;0.00</span>
+                </div>
+                <a href="checkout.html" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 px-4 rounded-lg hover:shadow-md transition-shadow duration-300 text-center">
+                    Proceed to Checkout
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-2xl w-full max-w-md shadow-lg">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-2xl font-semibold text-gray-800">Login</h3>
+                <button onclick="toggleModal('loginModal')" class="text-gray-600 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label for="loginEmail" class="block text-gray-700 mb-2">Email</label>
+                    <input type="email" id="loginEmail" class="w-full p-3 border rounded-lg focus:ring-purple-500 focus:border-purple-500" required>
+                </div>
+                <div>
+                    <label for="loginPassword" class="block text-gray-700 mb-2">Password</label>
+                    <input type="password" id="loginPassword" class="w-full p-3 border rounded-lg focus:ring-purple-500 focus:border-purple-500" required>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-lg hover:shadow-md transition-shadow duration-300">
+                    Login
+                </button>
+                <p class="text-center text-gray-600">
+                    Don't have an account?
+                    <a href="#" onclick="showRegisterModal()" class="text-purple-600 hover:text-purple-800 transition-colors duration-200">Register</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-2xl w-full max-w-md shadow-lg">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-2xl font-semibold text-gray-800">Register</h3>
+                <button onclick="toggleModal('registerModal')" class="text-gray-600 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form id="registerForm" class="space-y-6">
+                <div>
+                    <label for="registerName" class="block text-gray-700 mb-2">Full Name</label>
+                    <input type="text" id="registerName" class="w-full p-3 border rounded-lg focus:ring-purple-500 focus:border-purple-500" required>
+                </div>
+                <div>
+                    <label for="registerEmail" class="block text-gray-700 mb-2">Email</label>
+                    <input type="email" id="registerEmail" class="w-full p-3 border rounded-lg focus:ring-purple-500 focus:border-purple-500" required>
+                </div>
+                <div>
+                    <label for="registerPassword" class="block text-gray-700 mb-2">Password</label>
+                    <input type="password" id="registerPassword" class="w-full p-3 border rounded-lg focus:ring-purple-500 focus:border-purple-500" required>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-lg hover:shadow-md transition-shadow duration-300">
+                    Register
+                </button>
+                <p class="text-center text-gray-600">
+                    Already have an account?
+                    <a href="#" onclick="showLoginModal()" class="text-purple-600 hover:text-purple-800 transition-colors duration-200">Sign In</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-gray-800 to-gray-900 text-gray-300 py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-10">
+                <div>
+                    <h4 class="text-2xl font-semibold text-white mb-6">Tech</h4>
+                    <p class="text-gray-400">Your ultimate destination for premium tech solutions and unparalleled service.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="/" class="text-gray-400 hover:text-white transition-colors duration-200">Home</a></li>
+                        <li><a href="/#products" class="text-gray-400 hover:text-white transition-colors duration-200">Products</a></li>
+                        <li><a href="/#about" class="text-gray-400 hover:text-white transition-colors duration-200">About Us</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors duration-200">Contact</a></li>
+                        <li><a href="privacy-policy.html" class="text-gray-400 hover:text-white transition-colors duration-200">Privacy Policy</a></li>
+                        <li><a href="refund-policy.html" class="text-gray-400 hover:text-white transition-colors duration-200">Refund & Cancellation Policy</a></li>
+                        <li><a href="terms-conditions.html" class="text-gray-400 hover:text-white transition-colors duration-200">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-6">Contact</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 inline-block mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>Baner</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 inline-block mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>+91 0000000000</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 inline-block mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>info@.com</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-6">Follow Us</h4>
+                    <div class="flex space-x-5">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a9.5 9.5 0 0 0 13-2.56A8.37 8.37 0 0 1 23 3z"></path></svg></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center">
+                <p class="text-gray-400">&copy; 2025 Computer. All rights reserved.</p>
+                <p class="text-gray-400">
+                    <a href="privacy-policy.html" class="hover:text
+                    -white">Privacy Policy</a> |
+                    <a href="refund-policy.html" class="hover:text
+                    -white">Refund & Cancellation Policy</a> |
+                    <a href="terms-conditions.html" class="hover:text
+                    -white">Terms & Conditions</a>
+                </p>
+                        
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simulated database
+        const db = {
+            users: [],
+            products: [
+            {
+                    id: 1,
+                    name: "High-Performance Gaming PC",
+                    image: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fEhpZ2glMjBQZXJmb3JtYW5jZSUyMEdhbWluZyUyMFBDfGVufDB8fDB8fHww",
+                    price: 861.52,
+                    description: "Experience top-tier gaming with high-speed processors, advanced graphics, and smooth performance."
+                },
+                {
+                    id: 2,
+                    name: "Business Laptop",
+                    image: "https://media.istockphoto.com/id/1409520341/photo/group-of-young-people-discussing-in-the-co-working-office.webp?a=1&b=1&s=612x612&w=0&k=20&c=P4YjC3AEogPzkRnpta_IFFr2Pa5idqqU11-neJx_Ars=",
+                    price: 569.40 ,
+                    description: "Lightweight, powerful, and built for professionals. Perfect for multitasking and office work."
+                },
+                {
+                    id: 3,
+                    name: "All-in-One Desktop",
+                    image: "https://plus.unsplash.com/premium_photo-1681816189240-9437a3a017fb?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8QWxsJTIwaW4lMjBPbmUlMjBEZXNrdG9wfGVufDB8fDB8fHww",
+                    price: 689.44,
+                    description: "Sleek and space-saving design with powerful features for home and office use."
+                },
+                {
+                    id: 4,
+                    name: "Budget-Friendly Laptop",
+                    image: "https://plus.unsplash.com/premium_photo-1681666713728-9ed75e148617?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8QnVkZ2V0JTIwRnJpZW5kbHklMjBMYXB0b3B8ZW58MHx8MHx8fDA%3D",
+                    price: 349.99,
+                    description: "Affordable and reliable laptop for everyday use. Perfect for students and casual users."
+                },
+                {
+                    id: 5,
+                    name: "Professional Workstation",
+                    image: "https://media.istockphoto.com/id/1435220822/photo/african-american-software-developer.webp?a=1&b=1&s=612x612&w=0&k=20&c=XETUT5mBrRDzRjXu_D86Q6AVXiqeDI4qTQxgGL_uN8U=",
+                    price: 1299.99,
+                    description: "Powerful workstation with advanced features for professionals and content creators."
+                },
+                {
+                    id: 6,
+                    name: "Portable Chromebook",
+                    image: "https://images.unsplash.com/photo-1522202773758-7622dc42a833?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8UG9ydGFibGUlMjBDaHJvbWVib29rfGVufDB8fDB8fHww",
+                    price: 199.99,
+                    description: "Lightweight and affordable Chromebook for browsing, streaming, and everyday tasks."
+                },
+                {
+                    id: 7,
+                    name: "Gaming Monitor",
+                    image: "https://plus.unsplash.com/premium_photo-1682141878168-5dace8e1785d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8R2FtaW5nJTIwTW9uaXRvcnxlbnwwfHwwfHx8MA%3D%3D",
+                    price: 299.99,
+                    description: "Immersive gaming experience with high refresh rates, low response times, and stunning visuals."
+                },
+                {
+                    id: 8,
+                    name: "Wireless Keyboard & Mouse",
+                    image: "https://media.istockphoto.com/id/509041912/photo/computer-work.webp?a=1&b=1&s=612x612&w=0&k=20&c=bIlt4yfp7XVPjzz-UtBGMXeG2l6Ucilfc0i80oOWZbU=",
+                    price: 49.99,
+                    description: "Ergonomic and stylish wireless keyboard and mouse combo for work and gaming."
+                },
+                {
+                    id: 9,
+                    name: "External Hard Drive",    
+                    image: "https://media.istockphoto.com/id/1364094222/photo/backup-your-software.webp?a=1&b=1&s=612x612&w=0&k=20&c=JKeYdUxEBpP8tCI80CQXg59Yc0zbmEm_tSI3bQcdGp0=",
+                    price: 79.99,
+                    description: "Expand your storage with high-capacity external hard drives for backups and file storage."
+                },
+                {
+                    id: 10,
+                    name: "Gaming Headset",
+                    image: "https://media.istockphoto.com/id/671016804/photo/young-gamer-playing-video-game-wearing-headphone.webp?a=1&b=1&s=612x612&w=0&k=20&c=jnF_F2LA7-Rb8Zdthp0Dcp3KvMZouDdz2NsVsHugatQ=",
+                    price: 99.99,
+                    description: "Immersive audio experience with high-quality gaming headsets for PC and consoles."
+                },
+                {
+                    id: 11,
+                    name: "Wireless Router",
+                    image: "https://media.istockphoto.com/id/1270583054/photo/selective-focus-at-router-internet-router-on-working-table-with-blurred-man-connect-the-cable.webp?a=1&b=1&s=612x612&w=0&k=20&c=UC41JjbyRdfNDlj4FOTOz8q0PvTbZRapPnt4l2swUlU=",
+                    price: 59.99,
+                    description: "High-speed wireless routers for seamless connectivity and network performance."
+                },
+                {
+                    id: 12,
+                    name: "Smart Home Security Camera",
+                    image: "https://media.istockphoto.com/id/1218045046/photo/infrared-camera-is-technology-home-security-system-and-monitored-by-smart-phone-stock-photo.webp?a=1&b=1&s=612x612&w=0&k=20&c=GNd6XsKrb-rl7yhFDw-G_KLc4He_Hs9ezJangnJLv-o=",
+                    price: 129.99,
+                    description: "Keep your home secure with smart security cameras for monitoring and surveillance."
+                },
+
+                
+            ],
+            cart: []
+        };
+
+        let currentUser = null;
+
+        // Initialize the application
+        function init() {
+            renderProducts();
+            updateCartCount();
+            setupEventListeners();
+        }
+
+        // Render products
+        function renderProducts() {
+    const productsGrid = document.getElementById('productsGrid');
+    productsGrid.innerHTML = db.products.map(product => `
+        <div class="product-card bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+            <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover object-center">
+            <div class="p-6 space-y-3">
+                <h3 class="text-xl font-semibold text-gray-800">${product.name}</h3>
+                <p class="text-gray-600">${product.description}</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-2xl font-bold text-purple-700">&#8377;${(product.price * 80).toFixed(2)}</span>
+                    <button onclick="addToCart(${product.id})" 
+                            class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-5 py-2 rounded-lg hover:shadow-md transition-shadow duration-300">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+        // Cart functionality
+        function addToCart(productId) {
+            if (!currentUser) {
+                showLoginModal();
+                return;
+            }
+            const product = db.products.find(p => p.id === productId);
+            if (product) {
+                db.cart.push(product);
+                localStorage.setItem('cart', JSON.stringify(db.cart)); // Save cart to local storage
+                updateCartCount();
+                renderCart();
+            }
+        }
+
+        function updateCartCount() {
+            document.querySelector('.cart-count').textContent = db.cart.length;
+        }
+
+        function renderCart() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = db.cart.map(item => `
+                <div class="flex items-center justify-between p-4 border-b">
+                    <div class="flex items-center space-x-4">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                        <div>
+                            <h4 class="font-semibold">${item.name}</h4>
+                            <p class="text-gray-600">&#8377;${(item.price * 80).toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="text-red-500">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+            
+            const total = db.cart.reduce((sum, item) => sum + (item.price * 80), 0);
+            document.getElementById('cartTotal').innerHTML = `&#8377;${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(productId) {
+            const index = db.cart.findIndex(item => item.id === productId);
+            if (index > -1) {
+                db.cart.splice(index, 1);
+                updateCartCount();
+                renderCart();
+            }
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            sidebar.classList.toggle('translate-x-full');
+        }
+
+        // Authentication
+        function showLoginModal() {
+            toggleModal('loginModal');
+        }
+
+        function showRegisterModal() {
+            toggleModal('loginModal');
+            toggleModal('registerModal');
+        }
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+        }
+
+        function login(email, password) {
+            const user = db.users.find(u => u.email === email && u.password === password);
+            if (user) {
+                currentUser = user;
+                updateUserInterface();
+                toggleModal('loginModal');
+                showNotification('Welcome back!');
+            } else {
+                showNotification('Invalid credentials', 'error');
+            }
+        }
+
+        function register(name, email, password) {
+            if (db.users.some(u => u.email === email)) {
+                showNotification('Email already registered', 'error');
+                return;
+            }
+            const user = { id: db.users.length + 1, name, email, password };
+            db.users.push(user);
+            currentUser = user;
+            updateUserInterface();
+            toggleModal('registerModal');
+            showNotification('Registration successful!');
+        }
+
+        function logout() {
+            currentUser = null;
+            db.cart = [];
+            updateUserInterface();
+            updateCartCount();
+            showNotification('Logged out successfully');
+        }
+
+        function updateUserInterface() {
+            const userSection = document.getElementById('userSection');
+            if (currentUser) {
+                userSection.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-700">Welcome, ${currentUser.name}</span>
+                        <button onclick="logout()" class="text-gray-600 hover:text-gray-800">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                userSection.innerHTML = `
+                    <button onclick="showLoginModal()" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors">
+                        Sign In
+                    </button>
+                `;
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            // Implementation for showing notifications
+            alert(message);
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            document.getElementById('loginForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                login(email, password);
+            });
+
+            document.getElementById('registerForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                register(name, email, password);
+            });
+        }
+
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Initialize the application
+        init();
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
